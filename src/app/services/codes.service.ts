@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Env } from '../../env.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CodesService {
 
-  private apiUrl = 'http://localhost:3000/api/codes'; 
+  private apiUrl = Env.baseURL+ '/codes'; 
   constructor(private http: HttpClient) {}
 
   getCodes(): Observable<any[]> {
