@@ -1,0 +1,40 @@
+<div class="header">
+  <h3>Product Management</h3>
+</div>
+
+
+<button pButton type="button" label="Add Product" icon="pi pi-plus" (click)="showDialogToAdd()"></button>
+
+<p-table [value]="products" [paginator]="true" [rows]="5" [lazy]="false" [rowsPerPageOptions]="[5, 10, 20]" [totalRecords]="products.length">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Composition</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+    <tr>
+      <td>{{ rowIndex + 1  }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.composition }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog header="Add Product" [(visible)]="displayDialog" [modal]="true" [closable]="false" [responsive]="true">
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="name">Name</label>
+      <input id="name" type="text" pInputText [(ngModel)]="newProduct.name" />
+    </div>
+    <div class="p-field">
+      <label for="composition">Composition</label>
+      <input id="composition" type="text" pInputText [(ngModel)]="newProduct.composition" />
+    </div>
+  </div>
+  <p-footer>
+    <button pButton type="button" label="Save" icon="pi pi-check" (click)="saveProduct()"></button>
+    <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="displayDialog=false"></button>
+  </p-footer>
+</p-dialog>

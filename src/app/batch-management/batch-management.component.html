@@ -1,0 +1,73 @@
+<div class="header">
+  <h3>Batch Management</h3>
+</div>
+
+<button pButton type="button" label="Add Batch" icon="pi pi-plus" (click)="showDialogToAdd()"></button>
+
+<p-table [value]="batches" [paginator]="true" [rows]="5" [lazy]="false" [rowsPerPageOptions]="[5, 10, 20]" [totalRecords]="batches.length">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Product</th>
+      <th>MRP</th>
+      <th>Manufacturing Date</th>
+      <th>Expiry Date</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-batch let-rowIndex="rowIndex">
+    <tr>
+      <td>{{ rowIndex + 1 }}</td>
+      <td>{{ batch.name }}</td>
+      <td>{{ batch.productId?.name }}</td>
+      <td>{{ batch.mrp }}</td>
+      <td>{{ batch.manufacturingDate | date }}</td>
+      <td>{{ batch.expiryDate | date }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-dialog header="Add Batch" [(visible)]="displayDialog" [modal]="true" [closable]="false" [responsive]="true">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="name">Name</label>
+        <input id="name" type="text" pInputText [(ngModel)]="newBatch.name" />
+        <small *ngIf="isNameInvalid" class="p-error">Batch name is required and must be unique.</small>
+      </div>
+      <div class="p-field">
+        <label for="productId">Product</label>
+        <p-dropdown [options]="products" optionLabel="name" [(ngModel)]="newBatch.productId" placeholder="Select a Product"></p-dropdown>
+      </div>
+      <div class="p-field">
+        <label for="mrp">MRP</label>
+        <input id="mrp" type="number" pInputText [(ngModel)]="newBatch.mrp" />
+      </div>
+      <div class="p-field">
+        <label for="manufacturingDate">Manufacturing Date</label>
+        <input 
+          id="manufacturingDate" 
+          type="date" 
+          [(ngModel)]="newBatch.manufacturingDate" 
+          [min]="minDate" 
+          (change)="validateDates()"
+          style="width: 100%;"
+        />      
+      </div>
+      <div class="p-field">
+        <label for="expiryDate">Expiry Date</label>
+        <input 
+        id="expiryDate" 
+        type="date" 
+        [(ngModel)]="newBatch.expiryDate" 
+        [min]="newBatch.manufacturingDate" 
+        [max]="maxDate" 
+        (change)="validateDates()"
+        style="width: 100%;"
+      />
+      </div>
+    </div>
+    <p-footer>
+      <button pButton type="button" label="Save" icon="pi pi-check" (click)="saveBatch()"></button>
+      <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="displayDialog=false"></button>
+    </p-footer>
+  </p-dialog>
+  
